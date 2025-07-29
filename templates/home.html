@@ -19,55 +19,57 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h3 class="pt-5 text-center">Django ToDo App</h3>
-        <div class="row">
-            <h4>My Day</h4>
-            <p class="text-muted">{% now "jS F Y" %}</p>
-            <div class="col-md-7 col-lg-7" style="height: 450px; overflow: scroll;">
-                <!-- List of all the tasks for the day -->
-                
-                <div class="card m-1">
-                    <div class="card-body">
-                        Task
-                        <span style="position: relative; float: right;">
-                            <a href="" class="btn btn-success"><i class="fa fa-check"></i> Mark as Done</a>
-                            <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                            <a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
-                        </span>
-                    </div>
-                </div>
-                
+  <div class="container d-flex flex-column justify-content-between min-vh-100">
+    <div>
+      <h3 class="text-center">Django ToDo App</h3>
+      <div class="row">
+        <h4>My Day</h4>
+        <p class="text-muted">{% now "jS F Y" %}</p>
+
+        <!-- Task list -->
+        <div class="col-md-7" style="max-height: 400px; overflow-y: auto;">
+          {% for task in tasks %}
+          <div class="card m-1">
+            <div class="card-body">
+              {{task.task}}
+              <span class="float-end">
+                <a href="" class="btn btn-success"><i class="fa fa-check"></i> Mark as Done</a>
+                <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                <a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+              </span>
             </div>
-            <div class="col-md-5 col-lg-5">
-                <h5>Completed Tasks</h5>
-                <!-- List of all the tasks that have completed -->
-                
-                <div class="card m-1">
-                    <div class="card-body">
-                        Completed Task
-                        <span style="position: relative; float: right;">
-                            <a href="" class="btn btn-danger"><i class="fa fa-times"></i> Mark as Undone</a>
-                        </span>
-                    </div>
-                </div>
-                
-            </div>
+          </div>
+          {% endfor %}
         </div>
-        <div class="row">
-            <div class="col-md-6 col-lg-6 p-0" style="position: absolute; bottom: 50px;">
-                <!-- To Do Form -->
-                <form action="" method="POST">
-                    
-                    <div class="form-group">
-                        <span style="display: flex;">
-                            <input type="text" name="task" class="form-control" placeholder="Add a task">
-                            <button type="submit" class="btn btn-primary" style="width: 200px;"><i class="fa fa-plus"></i> Add</button>
-                        </span>
-                    </div>
-                </form>
+
+        <!-- Completed tasks -->
+        <div class="col-md-5">
+          <h5>Completed Tasks</h5>
+          <div class="card m-1">
+            <div class="card-body">
+              Completed Task
+              <span class="float-end">
+                <a href="" class="btn btn-danger"><i class="fa fa-times"></i> Mark as Undone</a>
+              </span>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+
+    <!-- Form stays at the bottom naturally -->
+    <div class="row">
+      <div class="col-md-6">
+        <form action="{% url 'addTask' %}" method="POST" class="bg-light p-3 rounded shadow-sm">
+          {% csrf_token %}
+          <div class="form-group d-flex gap-2">
+            <input type="text" name="task" class="form-control" placeholder="Add a task">
+            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Add</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </body>
+
 </html>
